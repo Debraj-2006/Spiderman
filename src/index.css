@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Bebas+Neue&display=swap');
+
 
 /* ─── Design Tokens ─────────────────────────────────────────── */
 :root {
@@ -280,4 +280,88 @@ body::before {
 /* ─── Web draw animation fallback ─────────────────────────────── */
 @keyframes drawWeb {
   to { stroke-dashoffset: 0; }
+}
+
+/* ─── Parallax background base ────────────────────────────────── */
+/* Shared by Hero, QuoteRotator, and FinalCTA parallax images.
+   overflow:hidden on .section already clips the overscroll. */
+.hero-parallax-bg,
+.quote-parallax-bg,
+.cta-parallax-bg {
+  position: absolute;
+  inset: -20%;          /* extra room so yPercent:-30 doesn't expose edges */
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 0;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+/* Hero: lock face to top so Spider-Man's head is never cropped */
+.hero-parallax-bg {
+  background-position: center 0% !important;
+  background-size: cover;
+}
+
+/* ─── Section overlays ────────────────────────────────────────── */
+/* Hero: dark cinematic vignette – shows face, darkens edges */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.72) 0%,
+    rgba(10,0,0,0.45) 40%,
+    rgba(0,0,0,0.82) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Quote: blue-tinted moonlight feel */
+.quote-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,20,0.78) 0%,
+    rgba(0,0,30,0.55) 50%,
+    rgba(0,0,20,0.82) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* CTA: lighter so the pink city bleeds through */
+.cta-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.65) 0%,
+    rgba(0,0,0,0.40) 50%,
+    rgba(0,0,0,0.72) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ─── CTA: endless falling drift animation ────────────────────── */
+/* The bg is scaleY(-1) flipped, so moving backgroundPositionY
+   upward (+ve increment) makes Miles appear to fall downward.    */
+@keyframes ctaDrift {
+  0%   { background-position: center 30%; }
+  100% { background-position: center 70%; }
+}
+
+/* ─── Mobile: disable parallax + drift ───────────────────────── */
+@media (max-width: 767px) {
+  .hero-parallax-bg,
+  .quote-parallax-bg,
+  .cta-parallax-bg {
+    inset: 0;                 /* reset the extra bleed */
+    transform: none !important;
+    background-attachment: scroll;
+    animation: none !important;
+  }
 }

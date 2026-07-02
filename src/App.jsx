@@ -6,6 +6,7 @@ import StatsHUD from './components/StatsHUD';
 import QuoteRotator from './components/QuoteRotator';
 import SuitArchive from './components/SuitArchive';
 import FinalCTA from './components/FinalCTA';
+import ScrollProgressBar from './components/ScrollProgressBar';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,6 +19,7 @@ export default function App() {
 
   return (
     <main>
+      <ScrollProgressBar />
       <Hero />
       <StatsHUD />
       <QuoteRotator />
@@ -26,3 +28,4 @@ export default function App() {
     </main>
   );
 }
+

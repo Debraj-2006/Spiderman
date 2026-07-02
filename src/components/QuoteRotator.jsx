@@ -12,10 +12,45 @@ const QUOTES = [
 
 export default function QuoteRotator() {
   const sectionRef = useRef(null);
+  const bgRef      = useRef(null);
 
   useEffect(() => {
     const section = sectionRef.current;
+    const bg      = bgRef.current;
+    if (!section || !bg) return;
+
     const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+
+      // Desktop only: parallax + zoom on the Miles/Gwen image
+      mm.add('(min-width: 768px)', () => {
+        gsap.fromTo(bg,
+          { scale: 1.15 },
+          {
+            scale: 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'top top',
+              scrub: true,
+            },
+          }
+        );
+
+        gsap.to(bg, {
+          yPercent: -30,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+          },
+        });
+      });
+
+      // Quote reveal (pinned scroll) — all screen sizes
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
@@ -28,20 +63,16 @@ export default function QuoteRotator() {
       });
 
       tl.from('.quote-header', { opacity: 0, y: -30, duration: 0.4 });
-
-      // Quote 0 in
-      tl.to('.qt0', { opacity: 1, y: 0, duration: 0.6 }, '>0.1');
-      tl.to('.qa0', { opacity: 1, duration: 0.4 }, '<0.3');
-      // Quote 0 out, Quote 1 in
+      tl.to('.qt0', { opacity: 1, y: 0,   duration: 0.6 }, '>0.1');
+      tl.to('.qa0', { opacity: 1,          duration: 0.4 }, '<0.3');
       tl.to('.qt0', { opacity: 0, y: -20, duration: 0.4 }, '>0.5');
-      tl.to('.qa0', { opacity: 0, duration: 0.3 }, '<');
-      tl.to('.qt1', { opacity: 1, y: 0, duration: 0.6 }, '>0.1');
-      tl.to('.qa1', { opacity: 1, duration: 0.4 }, '<0.3');
-      // Quote 1 out, Quote 2 in
+      tl.to('.qa0', { opacity: 0,          duration: 0.3 }, '<');
+      tl.to('.qt1', { opacity: 1, y: 0,   duration: 0.6 }, '>0.1');
+      tl.to('.qa1', { opacity: 1,          duration: 0.4 }, '<0.3');
       tl.to('.qt1', { opacity: 0, y: -20, duration: 0.4 }, '>0.5');
-      tl.to('.qa1', { opacity: 0, duration: 0.3 }, '<');
-      tl.to('.qt2', { opacity: 1, y: 0, duration: 0.6 }, '>0.1');
-      tl.to('.qa2', { opacity: 1, duration: 0.4 }, '<0.3');
+      tl.to('.qa1', { opacity: 0,          duration: 0.3 }, '<');
+      tl.to('.qt2', { opacity: 1, y: 0,   duration: 0.6 }, '>0.1');
+      tl.to('.qa2', { opacity: 1,          duration: 0.4 }, '<0.3');
     }, section);
 
     return () => ctx.revert();
@@ -52,43 +83,40 @@ export default function QuoteRotator() {
       <div className="corner-tl" /><div className="corner-tr" />
       <div className="corner-bl" /><div className="corner-br" />
 
-      {/* Faint web background */}
-      <svg viewBox="0 0 500 500"
-        className="absolute inset-0 w-full h-full pointer-events-none"
-        style={{ fill: 'none', stroke: '#e63946', strokeWidth: '0.5', opacity: 0.055 }}
-        aria-hidden="true">
-        {Array.from({ length: 8 }, (_, i) => {
-          const angle = (i * 45 * Math.PI) / 180;
-          return <line key={i} x1="250" y1="250"
-            x2={250 + 280 * Math.cos(angle)} y2={250 + 280 * Math.sin(angle)} />;
-        })}
-        {[50, 100, 150, 200, 250].map((r, ri) => {
-          const pts = Array.from({ length: 8 }, (_, i) => {
-            const a = (i * 45 * Math.PI) / 180;
-            return `${250 + r * Math.cos(a)},${250 + r * Math.sin(a)}`;
-          }).join(' ');
-          return <polyline key={ri} points={pts + ` ${250 + r},${250}`} />;
-        })}
-      </svg>
+      {/* Parallax background: Miles & Gwen moonlight rooftop */}
+      <div
+        ref={bgRef}
+        className="quote-parallax-bg"
+        style={{
+          backgroundImage: `url('/miles-gwen.jpg')`,
+          backgroundPosition: 'center center',
+        }}
+      />
 
+      {/* Blue-tinted moonlight overlay */}
+      <div className="quote-overlay" />
+
+      {/* Content */}
       <div className="relative z-10 w-full max-w-3xl mx-auto px-8 text-center">
-        <p className="quote-header text-xs tracking-[0.35em] text-red-500 uppercase mb-16">
+        <p className="quote-header text-xs tracking-[0.35em] text-red-400 uppercase mb-16"
+          style={{ textShadow: '0 0 8px rgba(230,57,70,0.5)' }}>
           // WORDS FROM THE SPIDER-VERSE
         </p>
 
-        {/* All 3 quotes stacked absolutely */}
-        <div className="relative" style={{ minHeight: '180px' }}>
+        <div className="relative" style={{ minHeight: '220px' }}>
           {QUOTES.map((q, i) => (
-            <div key={i} className="absolute inset-0 flex flex-col items-center justify-center gap-5">
+            <div key={i} className="absolute inset-0 flex flex-col items-center justify-center gap-6">
               <blockquote
                 className={`quote-text qt${i}`}
                 style={{
-                  fontSize: 'clamp(1rem, 2.5vw, 1.5rem)',
+                  fontSize: 'clamp(1.15rem, 3vw, 1.8rem)',
                   fontStyle: 'italic',
-                  color: '#ddd',
-                  lineHeight: 1.8,
+                  color: '#f0f0f0',
+                  lineHeight: 1.7,
                   opacity: 0,
                   transform: 'translateY(30px)',
+                  textShadow: '0 2px 20px rgba(0,0,0,0.8)',
+                  maxWidth: '700px',
                 }}
               >
                 {q.text}
@@ -96,10 +124,10 @@ export default function QuoteRotator() {
               <cite
                 className={`qa${i} not-italic`}
                 style={{
-                  fontSize: '0.7rem',
-                  letterSpacing: '0.25em',
+                  fontSize: '0.75rem',
+                  letterSpacing: '0.3em',
                   color: 'var(--red)',
-                  textShadow: '0 0 8px #e63946',
+                  textShadow: '0 0 12px #e63946',
                   textTransform: 'uppercase',
                   opacity: 0,
                 }}
@@ -112,10 +140,10 @@ export default function QuoteRotator() {
 
         <div className="mt-20 flex items-center gap-4">
           <div className="flex-1 h-px"
-            style={{ background: 'linear-gradient(90deg, transparent, #e63946aa)' }} />
-          <span className="text-red-600/60 text-xs">✦</span>
+            style={{ background: 'linear-gradient(90deg, transparent, rgba(230,57,70,0.6))' }} />
+          <span className="text-red-500/60 text-xs">✦</span>
           <div className="flex-1 h-px"
-            style={{ background: 'linear-gradient(90deg, #e63946aa, transparent)' }} />
+            style={{ background: 'linear-gradient(90deg, rgba(230,57,70,0.6), transparent)' }} />
         </div>
       </div>
     </section>
