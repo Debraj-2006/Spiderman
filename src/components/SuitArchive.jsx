@@ -5,11 +5,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const SUITS = [
-  { name: 'Homemade Suit',       year: '2016', desc: 'DIY fabric. Queens basement. Made with love.', pct: 60 },
-  { name: 'Stark Suit',          year: '2017', desc: 'Stark Tech. AI interface. Instant kill mode.', pct: 70 },
-  { name: 'Iron Spider',         year: '2018', desc: 'Nanotechnology. Four waldoes. Infinity War.', pct: 80 },
-  { name: 'Integrated Suit',     year: '2021', desc: 'Stark tech. Instant kill restored. No Way Home.', pct: 88 },
-  { name: 'Upgraded Black Suit', year: '2021', desc: 'Enhanced stealth. Black & gold web detail.', pct: 97 },
+  { num: '01', name: 'Homemade Suit',  quote: '"Hey everyone."',               loc: 'Queens — 2016' },
+  { num: '02', name: 'Stark Suit',     quote: '"Friendly neighborhood."',       loc: 'Berlin — 2016' },
+  { num: '03', name: 'Iron Spider',    quote: '"I don\'t feel so good."',        loc: 'Titan — 2018' },
+  { num: '04', name: 'Integrated Suit',quote: '"No more pulling punches."',     loc: 'New York — 2021' },
+  { num: '05', name: 'Black Suit',     quote: '"You took everything from me."', loc: 'New York — 2021' },
 ];
 
 export default function SuitArchive() {
@@ -17,24 +17,30 @@ export default function SuitArchive() {
 
   useEffect(() => {
     const section = sectionRef.current;
-    const ctx = gsap.context(() => {
-      const entries = gsap.utils.toArray('.suit-entry', section);
+    if (!section) return;
 
+    const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: '+=150%',
+          end: '+=200%',
           pin: true,
           scrub: 1.5,
           anticipatePin: 1,
         },
       });
 
-      tl.from('.archive-title', { opacity: 0, y: -40, duration: 0.5 });
+      tl.to('.archive-header', { opacity: 1, y: 0, duration: 0.4 });
+      SUITS.forEach((_, i) => {
+        tl.to(`.suit-row-${i}`, { opacity: 1, x: 0, duration: 0.5 }, '>0.15');
+      });
+      tl.to('.archive-loader',      { opacity: 1, duration: 0.3 }, '>0.3');
+      tl.to('.archive-loader-fill', { width: '100%', duration: 0.8, ease: 'none' }, '>0.1');
 
-      entries.forEach((el) => {
-        tl.to(el, { opacity: 1, x: 0, duration: 0.5 }, '>-0.2');
+      gsap.set('.archive-header', { y: 40 });
+      SUITS.forEach((_, i) => {
+        gsap.set(`.suit-row-${i}`, { x: -50 });
       });
     }, section);
 
@@ -42,34 +48,44 @@ export default function SuitArchive() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="section" id="suits">
-      <div className="corner-tl" /><div className="corner-tr" />
-      <div className="corner-bl" /><div className="corner-br" />
+    <section ref={sectionRef} className="scene" id="archive"
+      style={{ background: 'var(--bg)' }}>
+      <div className="corner corner-tl" /><div className="corner corner-tr" />
+      <div className="corner corner-bl" /><div className="corner corner-br" />
 
-      {/* Vertical accent line */}
-      <div className="absolute left-1/2 top-0 bottom-0 w-px pointer-events-none"
-        style={{ background: 'linear-gradient(180deg, transparent, #e6394622, transparent)', opacity: 0.4 }} />
+      <div className="seq-label">
+        SEQ 004 / 042<br />
+        // SUIT ARCHIVE // WEB-SHOOTER LOG<br />
+        // RESTORING
+      </div>
 
-      <div className="relative z-10 w-full max-w-3xl mx-auto px-8">
-        <div className="archive-title mb-14 text-center">
-          <p className="text-xs tracking-[0.35em] text-red-500 uppercase mb-2">// SUIT ARCHIVE</p>
-          <h2 className="hero-font glow-text"
-            style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', color: '#fff' }}>
-            THE WARDROBE
-          </h2>
-        </div>
+      {/* Header */}
+      <div className="archive-header"
+        style={{ opacity: 0, padding: '0 3rem', marginBottom: '3rem', maxWidth: 900 }}>
+        <p style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', letterSpacing: '0.25em', color: 'var(--red)', textTransform: 'uppercase', marginBottom: '0.6rem' }}>
+          // Registered Configurations
+        </p>
+        <p style={{ fontFamily: 'var(--display)', fontSize: 'clamp(2rem, 5vw, 4rem)', color: 'var(--text)', letterSpacing: '0.04em', lineHeight: 1 }}>
+          Suit<br />Archive.
+        </p>
+      </div>
 
-        <div className="flex flex-col gap-9">
-          {SUITS.map((suit) => (
-            <div key={suit.name} className="suit-entry">
-              <div className="suit-year">[ {suit.year} ]</div>
-              <div className="suit-name">{suit.name}</div>
-              <p className="text-xs text-gray-500 mt-1 leading-relaxed tracking-wide">{suit.desc}</p>
-              <div className="mt-3 fluid-bar-track" style={{ height: '2px' }}>
-                <div className="fluid-bar-fill" style={{ width: `${suit.pct}%` }} />
-              </div>
-            </div>
-          ))}
+      {/* Suit list */}
+      <div className="archive-list">
+        {SUITS.map((s, i) => (
+          <div key={i} className={`suit-entry suit-row-${i}`} style={{ opacity: 0 }}>
+            <div className="suit-num">{s.num} — {s.loc}</div>
+            <div className="suit-name">{s.name}</div>
+            <div className="suit-quote">{s.quote}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Loading bar */}
+      <div className="loader-wrap archive-loader">
+        <div className="loader-label">// Suit Archive · Restoring</div>
+        <div className="loader-track">
+          <div className="loader-fill archive-loader-fill" />
         </div>
       </div>
     </section>
