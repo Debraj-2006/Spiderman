@@ -1,0 +1,283 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Bebas+Neue&display=swap');
+
+/* ─── Design Tokens ─────────────────────────────────────────── */
+:root {
+  --red:      #e63946;
+  --blue:     #1d3557;
+  --dark:     #0d0d0d;
+  --dark2:    #111111;
+  --glow-red: 0 0 8px #e63946, 0 0 20px #e63946aa, 0 0 40px #e6394644;
+  --glow-sm:  0 0 4px #e63946, 0 0 10px #e6394688;
+}
+
+/* ─── Base ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--dark);
+}
+
+body {
+  font-family: 'Space Mono', monospace;
+  background-color: var(--dark);
+  color: #e0e0e0;
+  overflow-x: hidden;
+  cursor: crosshair;
+}
+
+/* ─── Web-Pattern Overlay (full page) ────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.06;
+  background-image:
+    /* Diagonal lines forming diamond grid — web mesh */
+    repeating-linear-gradient(
+      45deg,
+      #e63946 0px,
+      #e63946 1px,
+      transparent 1px,
+      transparent 60px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      #e63946 0px,
+      #e63946 1px,
+      transparent 1px,
+      transparent 60px
+    );
+}
+
+/* ─── Section wrapper ────────────────────────────────────────── */
+.section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* ─── Glow utilities ─────────────────────────────────────────── */
+.glow-red   { box-shadow: var(--glow-red); }
+.glow-text  { text-shadow: var(--glow-red); }
+.glow-sm    { box-shadow: var(--glow-sm);  }
+.border-glow { border: 1px solid var(--red); box-shadow: var(--glow-sm); }
+
+/* ─── Heading font ───────────────────────────────────────────── */
+.hero-font {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.08em;
+}
+
+/* ─── Web fluid bar ──────────────────────────────────────────── */
+.fluid-bar-track {
+  width: 100%;
+  height: 6px;
+  background: #1a1a1a;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid #333;
+}
+.fluid-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red), #ff6b6b);
+  border-radius: 3px;
+  box-shadow: var(--glow-sm);
+  width: 0%;
+  transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ─── Stat cards ──────────────────────────────────────────────── */
+.stat-card {
+  background: linear-gradient(135deg, #111 0%, #1a0a0a 100%);
+  border: 1px solid var(--red);
+  box-shadow: var(--glow-sm);
+  border-radius: 4px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(40px);
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--red);
+  box-shadow: var(--glow-sm);
+}
+.stat-card .label {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.stat-card .value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--red);
+  text-shadow: var(--glow-sm);
+}
+.stat-card .unit {
+  font-size: 0.75rem;
+  color: #666;
+  margin-left: 0.25rem;
+}
+
+/* ─── Quote section ───────────────────────────────────────────── */
+.quote-text {
+  font-family: 'Space Mono', monospace;
+  font-style: italic;
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  line-height: 1.7;
+  color: #ddd;
+  opacity: 0;
+  transform: translateY(30px);
+}
+.quote-author {
+  font-size: 0.75rem;
+  color: var(--red);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-shadow: var(--glow-sm);
+  opacity: 0;
+}
+
+/* ─── Timeline / Suit entries ─────────────────────────────────── */
+.suit-entry {
+  opacity: 0;
+  transform: translateX(-60px);
+  border-left: 2px solid var(--red);
+  padding-left: 1.5rem;
+  position: relative;
+}
+.suit-entry::before {
+  content: '';
+  position: absolute;
+  left: -5px; top: 50%;
+  transform: translateY(-50%);
+  width: 8px; height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+  box-shadow: var(--glow-sm);
+}
+.suit-year {
+  font-size: 0.65rem;
+  color: var(--red);
+  letter-spacing: 0.2em;
+  text-shadow: var(--glow-sm);
+  margin-bottom: 0.25rem;
+}
+.suit-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+
+/* ─── CTA button ──────────────────────────────────────────────── */
+.cta-btn {
+  display: inline-block;
+  padding: 0.9rem 2.5rem;
+  border: 2px solid var(--red);
+  color: var(--red);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: transparent;
+  box-shadow: var(--glow-red);
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+.cta-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+  z-index: -1;
+}
+.cta-btn:hover::before { transform: scaleX(1); }
+.cta-btn:hover { color: #fff; transform: translateY(-2px); }
+
+/* ─── HUD corner decoration ───────────────────────────────────── */
+.corner-tl, .corner-tr, .corner-bl, .corner-br {
+  position: absolute;
+  width: 20px; height: 20px;
+  border-color: var(--red);
+  border-style: solid;
+  opacity: 0.6;
+}
+.corner-tl { top: 1rem; left: 1rem;  border-width: 2px 0 0 2px; }
+.corner-tr { top: 1rem; right: 1rem; border-width: 2px 2px 0 0; }
+.corner-bl { bottom: 1rem; left: 1rem;  border-width: 0 0 2px 2px; }
+.corner-br { bottom: 1rem; right: 1rem; border-width: 0 2px 2px 0; }
+
+/* ─── Scan line overlay ───────────────────────────────────────── */
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.15) 2px,
+    rgba(0,0,0,0.15) 4px
+  );
+  z-index: 2;
+}
+
+/* ─── Scroll indicator ────────────────────────────────────────── */
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  animation: bounce 2s ease-in-out infinite;
+  opacity: 0.5;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(8px); }
+}
+
+/* ─── Spider hang animation ───────────────────────────────────── */
+@keyframes spiderSway {
+  0%, 100% { transform: rotate(-4deg); }
+  50%       { transform: rotate(4deg);  }
+}
+.spider-hang { animation: spiderSway 3s ease-in-out infinite; transform-origin: top center; }
+
+/* ─── Pulse ring ──────────────────────────────────────────────── */
+@keyframes pulseRing {
+  0%   { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(230,57,70,0.5); }
+  70%  { transform: scale(1);    box-shadow: 0 0 0 10px rgba(230,57,70,0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(230,57,70,0); }
+}
+
+/* ─── Web draw animation fallback ─────────────────────────────── */
+@keyframes drawWeb {
+  to { stroke-dashoffset: 0; }
+}
