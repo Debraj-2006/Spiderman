@@ -1,13 +1,9 @@
 import { useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Diagnostics from './components/Diagnostics';
+import SuitShowcase from './components/SuitShowcase';
 import Quotes from './components/Quotes';
-import SuitArchive from './components/SuitArchive';
 import Final from './components/Final';
-import ScrollProgressBar from './components/ScrollProgressBar';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,15 +15,14 @@ export default function App() {
   }, []);
 
   return (
-    <main>
-      <Navbar />
-      <ScrollProgressBar />
-      <Hero />
-      <Diagnostics />
-      <Quotes />
-      <SuitArchive />
-      <Final />
-    </main>
+    <>
+      <div className="scanlines" />
+      <div className="film-grain" />
+      <main>
+        <SuitShowcase />
+        <Quotes />
+        <Final />
+      </main>
+    </>
   );
 }
-
