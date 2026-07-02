@@ -55,7 +55,7 @@ export default function Final() {
         ref={bgRef} 
         className="absolute inset-[-20%] bg-cover bg-center z-0 will-change-transform"
         style={{
-          backgroundImage: `url('/alone.jpg')`,
+          backgroundImage: `url('/suit5.jpg')`,
           filter: 'brightness(0.15) saturate(0) contrast(1.8)'
         }} 
       />

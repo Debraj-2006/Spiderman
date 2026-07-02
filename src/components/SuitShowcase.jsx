@@ -8,7 +8,7 @@ const SUITS = [
   {
     id: '01',
     name: 'HOMEMADE SUIT',
-    image: '/download.jpg',
+    image: '/suit1.jpg',
     filter: 'brightness(0.28) saturate(0.2) contrast(1.4)',
     accent: '#cc2200',
     tint: 'rgba(120,0,0,0.12)',
@@ -23,7 +23,7 @@ const SUITS = [
   {
     id: '02',
     name: 'STARK SUIT',
-    image: '/Spider-Man_in_Action__Ultimate_HD_Wallpaper_of_Your_Favorite_Superhero.jpg',
+    image: '/suit2.jpg',
     filter: 'brightness(0.32) saturate(0.45) contrast(1.25)',
     accent: '#e63946',
     tint: 'rgba(180,0,0,0.1)',
@@ -38,7 +38,7 @@ const SUITS = [
   {
     id: '03',
     name: 'IRON SPIDER',
-    image: '/HD_wallpaper__Iron_Spider_In_Spider-man_Ps4.jpg',
+    image: '/suit3.jpg',
     filter: 'brightness(0.3) saturate(0.6) contrast(1.3) sepia(0.25)',
     accent: '#c9a84c',
     tint: 'rgba(140,100,0,0.1)',
@@ -53,7 +53,7 @@ const SUITS = [
   {
     id: '04',
     name: 'NO WAY HOME',
-    image: '/download__2_.jpg',
+    image: '/suit4.jpg',
     filter: 'brightness(0.3) saturate(0.5) contrast(1.3)',
     accent: '#ff6b35',
     tint: 'rgba(180,60,0,0.1)',
@@ -68,7 +68,7 @@ const SUITS = [
   {
     id: '05',
     name: 'BLACK SUIT',
-    image: '/alone.jpg',
+    image: '/suit5.jpg',
     filter: 'brightness(0.22) saturate(0.1) contrast(1.6)',
     accent: '#ffffff',
     tint: 'rgba(255,255,255,0.03)',
@@ -83,7 +83,7 @@ const SUITS = [
   {
     id: '06',
     name: 'MILES MORALES',
-    image: '/Miles_y_gwen_wallpaper_Xbox_Xd.jpg',
+    image: '/suit6.jpg',
     filter: 'brightness(0.3) saturate(0.4) contrast(1.25)',
     accent: '#c850c0',
     tint: 'rgba(150,0,180,0.1)',
@@ -98,7 +98,7 @@ const SUITS = [
   {
     id: '07',
     name: 'SPIDER-VERSE',
-    image: '/random.jpg',
+    image: '/suit7.jpg',
     filter: 'brightness(0.28) saturate(0.5) contrast(1.4) hue-rotate(200deg)',
     accent: '#ff2d78',
     tint: 'rgba(180,0,80,0.1)',
